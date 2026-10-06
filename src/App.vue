@@ -38,7 +38,7 @@ const TASKS = [
   { range: [11, 14], name: 'Chore',       minutes: 15 },
   { range: [15, 17], name: 'Read',    minutes: 10 },
   { range: [18, 19], name: 'Exercise',    minutes: 15 },
-  { range: [20], name: 'Treat Yourself',  minutes: 20 },
+  { range: [20], name: 'Treat Yourself',  minutes: 30 },
 ];
 
 function taskForRoll(n) {

@@ -1,0 +1,23 @@
+:root {
+    --beige: #e8dfce;
+    --beige-dark: #d8ccb4;
+    --red: #a5392f;
+    --red-dark: #7e2b23;
+    --black: #201c18;
+    --ink: #2b2520;
+}
+
+
+
+body{
+    background-color: #f6f0e6;
+}
+
+
+@media(max-width:442px) {
+    .frame{
+        min-height: 100dvh;
+    }
+    
+}
+

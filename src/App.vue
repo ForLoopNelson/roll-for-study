@@ -1,6 +1,7 @@
 <template>
   <div class="frame">
-    <h1>Roll to Study</h1>
+    <h1>Critical Focus</h1>
+    <h3>Roll & Focus</h3>
 
     <div class="die-wrap">
       <div class="die" :class="{ rolling: isRolling }" @click="roll">{{ dieFace }}</div>
@@ -146,7 +147,7 @@ onUnmounted(clearTimer);
 }
 h1 {
   margin: 0 0 20px;
-  font-size: 22px;
+  font-size: 2.9rem;
   letter-spacing: 0.5px;
   color: var(--black);
 }

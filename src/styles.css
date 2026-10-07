@@ -8,6 +8,21 @@
 }
 
 
+@font-face {
+    font-family: "RuneFate-Regular";
+    src: url("/RuneFate-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+@font-face {
+    font-family: "SilverShard-Regular";
+    src: url("/SilverShard-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
 
 body{
     background-color: #f6f0e6;
@@ -17,6 +32,12 @@ body{
 @media(max-width:442px) {
     .frame{
         min-height: 100dvh;
+    }
+
+    #title {
+        letter-spacing: 2px;
+       
+        
     }
     
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="frame">
-    <h1>Critical Focus</h1>
+    <h1 id="title">Critical Focus</h1>
     <h3>Roll & Focus</h3>
 
     <div class="die-wrap">
@@ -146,9 +146,10 @@ onUnmounted(clearTimer);
   color: var(--ink);
 }
 h1 {
+  font-family: "SilverShard-Regular";
   margin: 0 0 20px;
-  font-size: 2.9rem;
-  letter-spacing: 0.5px;
+  font-size: 4.9rem;
+  letter-spacing: 4.3px;
   color: var(--black);
 }
 .die-wrap {

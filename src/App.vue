@@ -88,17 +88,13 @@ function roll() {
 }
 
 function tick() {
-  if (secondsLeft.value <= 0) {
-    running.value = false;
-    finished.value = true;
-    clearTimer();
-    return;
-  }
   secondsLeft.value--;
-  if (secondsLeft.value === 0) {
+  if (secondsLeft.value <= 0) {
+    secondsLeft.value = 0;
     running.value = false;
     finished.value = true;
     clearTimer();
+    completeTask();
   }
 }
 

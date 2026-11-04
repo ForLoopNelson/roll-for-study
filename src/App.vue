@@ -9,6 +9,7 @@
     <button class="roll-btn" @click="roll" :disabled="isRolling">
       {{ hasRolled ? 'Roll Again' : 'Roll the d20' }}
     </button>
+     <div class="stats"><span class="xp">{{ stats.xp }} XP</span> &middot; {{ stats.completed }} tasks done</div>
 
     <div class="result" v-if="current">
       <div class="task-name">{{ current.name }}</div>
@@ -54,6 +55,9 @@ const current = ref(null);
 const secondsLeft = ref(0);
 const running = ref(false);
 const finished = ref(false);
+
+const STORAGE_KEY = 'rollAndFocus';
+const stats = ref({ xp: 0, completed: 0 });
 let timerId = null;
 
 function clearTimer() {
@@ -96,6 +100,30 @@ function tick() {
     clearTimer();
     completeTask();
   }
+}
+
+
+
+// load saved progress
+try {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  if (saved) stats.value = { xp: saved.xp ?? 0, completed: saved.completed ?? 0 };
+} catch {}
+
+function saveStats() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(stats.value));
+  } catch {}
+}
+
+function xpForRoll(n) {
+  return n <= 10 ? 5 : 10;
+}
+
+function completeTask() {
+  stats.value.xp += xpForRoll(lastRoll.value);
+  stats.value.completed++;
+  saveStats();
 }
 
 function toggle() {
@@ -196,6 +224,14 @@ h1 {
 }
 .roll-btn:hover {
   background: var(--red-dark);
+}
+.stats {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.xp{
+  color:#367725;
 }
 .result {
   background: var(--beige);

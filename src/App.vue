@@ -34,13 +34,13 @@ import { ref, computed, onUnmounted } from 'vue';
 
 // Edit this list to change outcomes, ranges, or durations.
 const TASKS = [
-  { range: [1],   name: 'Deep Study',  minutes: 25 },
+  { range: [1,1],   name: 'Deep Study',  minutes: 25 },
   { range: [2,6],   name: 'Quick Study',  minutes: 10 },
   { range: [7, 10],  name: 'Quick Break', minutes: 5 },
   { range: [11, 14], name: 'Chore',       minutes: 15 },
   { range: [15, 17], name: 'Read',    minutes: 10 },
   { range: [18, 19], name: 'Exercise',    minutes: 15 },
-  { range: [20], name: 'Treat Yourself',  minutes: 30 },
+  { range: [20,20], name: 'Treat Yourself',  minutes: 30 },
 ];
 
 function taskForRoll(n) {

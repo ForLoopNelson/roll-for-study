@@ -4,9 +4,10 @@
     <h3>Roll & Focus</h3>
 
     <div class="die-wrap">
-      <div class="die" :class="{ rolling: isRolling }" @click="roll">{{ dieFace }}</div>
-    </div>
-    <button class="roll-btn" @click="roll" :disabled="isRolling">
+  <div class="die" :class="{ rolling: isRolling, locked: !canRoll }" @click="roll">{{ dieFace }}</div>
+  </div>
+
+    <button class="roll-btn" @click="roll" :disabled="!canRoll">
       {{ hasRolled ? 'Roll Again' : 'Roll the d20' }}
     </button>
      <div class="stats"><span class="xp">{{ stats.xp }} XP</span> &middot; {{ stats.completed }} tasks done</div>
@@ -22,8 +23,12 @@
         <button class="primary" @click="toggle" v-if="!finished">
           {{ running ? 'Pause' : (secondsLeft === current.minutes * 60 ? 'Start' : 'Resume') }}
         </button>
+        <button v-if="taskActive" :disabled="saveUsed" @click="savingThrow">
+          Saving Throw ({{ SAVE_DC }}+)
+        </button>
         <button @click="reset">Reset</button>
       </div>
+      <div class="save-msg" v-if="saveMessage">{{ saveMessage }}</div>
     </div>
     <div class="placeholder" v-else>Roll to get a task and a timer.</div>
   </div>
@@ -60,6 +65,28 @@ const STORAGE_KEY = 'rollAndFocus';
 const stats = ref({ xp: 0, completed: 0 });
 let timerId = null;
 
+const SAVE_DC = 12;
+const saveUsed = ref(false);
+const saveMessage = ref('');
+
+const taskActive = computed(() => current.value && !finished.value);
+const canRoll = computed(() => !isRolling.value && !taskActive.value);
+
+function savingThrow() {
+  if (!taskActive.value || saveUsed.value || isRolling.value) return;
+  saveUsed.value = true;
+  const n = 1 + Math.floor(Math.random() * 20);
+
+  if (n >= SAVE_DC) {
+    clearTimer();
+    running.value = false;
+    current.value = null; // unlocks the roll button
+    saveMessage.value = `Saving throw: ${n}. Success! Roll again for a new task.`;
+  } else {
+    saveMessage.value = `Saving throw: ${n}. Failed, you're stuck with this task.`;
+  }
+}
+
 function clearTimer() {
   if (timerId) {
     clearInterval(timerId);
@@ -68,7 +95,9 @@ function clearTimer() {
 }
 
 function roll() {
-  if (isRolling.value) return;
+  if (!canRoll.value) return;
+  saveUsed.value = false;
+  saveMessage.value = '';
   clearTimer();
   running.value = false;
   finished.value = false;
@@ -121,6 +150,9 @@ function xpForRoll(n) {
 }
 
 function completeTask() {
+  running.value = false;
+  finished.value = true;
+  saveMessage.value = '';
   stats.value.xp += xpForRoll(lastRoll.value);
   stats.value.completed++;
   saveStats();
@@ -225,13 +257,31 @@ h1 {
 .roll-btn:hover {
   background: var(--red-dark);
 }
+
+.roll-btn:disabled,
+.controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.roll-btn:hover:not(:disabled) {
+  background: var(--red-dark);
+}
+.die.locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.save-msg {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
 .stats {
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 16px;
 }
 .xp{
-  color:#367725;
+  color:var(--green);
 }
 .result {
   background: var(--beige);

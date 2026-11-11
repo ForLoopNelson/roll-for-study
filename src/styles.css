@@ -5,6 +5,7 @@
     --red-dark: #7e2b23;
     --black: #201c18;
     --ink: #2b2520;
+    --green:#367725;
 }
 
 
@@ -27,6 +28,8 @@
 body{
     background-color: #f6f0e6;
 }
+
+
 
 
 @media(max-width:442px) {
